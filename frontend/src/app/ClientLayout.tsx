@@ -1,10 +1,8 @@
 'use client';
-import { useAuth } from "@/global/auth/hook/useAuth";
+import { AuthProvider, useAuth } from "@/global/auth/hook/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
-
-const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null);
 
 export default function ClientLayout({ children }: {
     children: React.ReactNode;
@@ -21,7 +19,7 @@ export default function ClientLayout({ children }: {
 
     return (
         <>
-            <AuthContext.Provider value={authState}>
+            <AuthProvider>
                 <header>
                     <nav className="flex gap-4">
                         <Link href="/">메인</Link>
@@ -35,7 +33,7 @@ export default function ClientLayout({ children }: {
                     {children}
                 </main>
                 <footer>푸터</footer>
-            </AuthContext.Provider>
+            </AuthProvider>
         </>
     )
 }
