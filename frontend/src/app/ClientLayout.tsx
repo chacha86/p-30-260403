@@ -1,40 +1,10 @@
 'use client';
-import { fetchApi, FetchCallbacks } from "@/lib/client";
+import { useAuth } from "@/global/auth/hook/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null);
-
-function useAuth() {
-
-    const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
-
-    const getLoginMember = () => {
-        fetchApi("/api/v1/members/me")
-            .then((memberDto) => {
-                setLoginMember(memberDto);
-            })
-            .catch((err) => {
-            });
-    }
-
-    const logout = (callbacks: FetchCallbacks) => {
-        confirm("로그아웃 하시겠습니까?") &&
-            fetchApi("/api/v1/members/logout", {
-                method: "DELETE",
-            })
-                .then((data) => {
-                    setLoginMember(null);
-                    alert(data.msg);
-                })
-                .catch((rsData) => {
-                    alert(rsData.msg);
-                });
-    };
-
-    return { loginMember, getLoginMember, logout };
-}
 
 export default function ClientLayout({ children }: {
     children: React.ReactNode;
